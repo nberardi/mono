@@ -6,8 +6,6 @@ LIBRARY = System.Web.dll
 
 ifneq (1, $(FRAMEWORK_VERSION_MAJOR))
 
-LIBRARY_USE_INTERMEDIATE_FILE = yes
-
 # Because System.Web.dll and System.Web.Services.dll have a cyclic dependency, we need a two-pass build.
 # 1st pass - build System.Web.dll without System.Web.Services.dll reference
 # 2nd pass - build System.Web.dll with System.Web.Services.dll reference
@@ -269,6 +267,7 @@ LIB_MCS_FLAGS = \
 	-nowarn:612,618	\
 	-r:$(corlib)	 		\
 	-r:System.dll 			\
+	-r:System.Core.dll		\
 	-r:System.Drawing.dll 		\
 	-r:System.Data.dll		\
 	-r:System.Xml.dll		\
@@ -337,11 +336,6 @@ endif
 ifdef MONOWEB_DEP_FILE
 LIB_MCS_FLAGS += -define:MONOWEB_DEP -r:$(MONOWEB_DEP)
 $(build_lib): $(MONOWEB_DEP_FILE)
-endif
-
-ifdef SYSTEMCORE_DEP_FILE
-LIB_MCS_FLAGS += -define:SYSTEMCORE_DEP -r:$(SYSTEMCORE_DEP)
-$(build_lib): $(SYSTEMCORE_DEP_FILE)
 endif
 
 ifdef DEBUG
